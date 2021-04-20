@@ -3,17 +3,30 @@
 import socket  # for socket
 import sys
 
+
 def main():
     s = socket.socket()
-    print ("Socket successfully created")
+    print("Socket successfully created")
 
     port = 2222
 
     s.connect(("tricky-guess.csa-challenge.com", port))
+    f = open("words.txt", "r")
+    lines = f.read().split('\n')
+    print(len(lines))
+    print(lines[0])
 
-    for i in xrange(15):
-        print(s.recv(1024))
-        s.send("abc")
+    for x in range(16):
+        print(s.recv(1024).decode("utf-8"))
+
+        """input_msg = s.recv(1024)
+        full_msg = input_msg.split('\n')
+        for j in full_msg:
+            print(j)"""
+
+        print("i send - " + lines[x])
+        #s.send(lines[x])
+        s.sendto(lines[x].encode(), ("tricky-guess.csa-challenge.com", port))
 
     s.close()
     """s.bind(('', port))
@@ -34,6 +47,7 @@ def main():
 
     # Close the connection with the client
     c.close()"""
+
 
 if __name__ == "__main__":
     main()
